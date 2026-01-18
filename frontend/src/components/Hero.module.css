@@ -1,0 +1,131 @@
+.hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: var(--header-height);
+    overflow: hidden;
+}
+
+.bgImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.rightImageContainer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 60%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0.9;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Updated overlay for light/dark mode compatibility */
+    background: linear-gradient(90deg,
+            var(--background) 0%,
+            var(--background) 40%,
+            rgba(255, 255, 255, 0) 100%);
+    opacity: 0.95;
+    z-index: 1;
+}
+
+/* Add a bottom fade for smooth transition to next section */
+.overlay::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 15rem;
+    background: linear-gradient(to top, var(--background), transparent);
+}
+
+.content {
+    max-width: 650px;
+    color: var(--text-primary);
+    position: relative;
+    z-index: 10;
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.03em;
+}
+
+@media (min-width: 640px) {
+    .title {
+        font-size: 3.5rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .title {
+        font-size: 5rem;
+    }
+}
+
+.highlight {
+    background: linear-gradient(45deg, var(--primary), #a78bfa);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.subtitle {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    /* Reduced spacing */
+    line-height: 1.6;
+    max-width: 500px;
+}
+
+.buttons {
+    display: flex;
+    gap: 2.5rem;
+    margin-bottom: 4rem;
+    flex-wrap: wrap;
+}
+
+.features {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.featureItem {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.featureIcon {
+    color: var(--primary);
+}
+
+.featureItem h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.1rem;
+}
+
+.featureItem p {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
