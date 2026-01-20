@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Car, Menu, X, User, LogOut, ChevronDown, ShieldCheck } from "lucide-react";
+import { Car, Menu, X, User, LogOut, ChevronDown, ShieldCheck, Calendar } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -134,6 +134,27 @@ export default function Navbar() {
                                             >
                                                 <User size={16} style={{ color: "var(--text-secondary)" }} />
                                                 Mon Profil
+                                            </Link>
+
+                                            <Link
+                                                href="/reservations"
+                                                onClick={() => setDropdownOpen(false)}
+                                                style={{
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    gap: "0.75rem",
+                                                    padding: "0.875rem 1rem",
+                                                    color: "var(--text-primary)",
+                                                    fontSize: "0.875rem",
+                                                    fontWeight: 500,
+                                                    transition: "background 0.2s",
+                                                    textDecoration: "none"
+                                                }}
+                                                onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.05)"}
+                                                onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
+                                            >
+                                                <Calendar size={16} style={{ color: "var(--text-secondary)" }} />
+                                                Mes Réservations
                                             </Link>
 
                                             {user.role === 'ADMIN' && (

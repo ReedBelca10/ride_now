@@ -30,11 +30,12 @@ Le frontend est construit avec **Next.js 14** en utilisant l'**App Router**.
 
 Le backend est structuré de manière modulaire selon les standards de **NestJS**.
 
-- **Modules**: Organisation par domaine métier (`Auth`, `Users`, `Vehicles`, `Admin`).
-- **Services**: Logique métier pure et interactions avec les bases de données.
+- **Modules**: Organisation par domaine métier (`Auth`, `Users`, `Vehicles`, `Admin`, `Reservations`).
+- **Services**: Logique métier pure et interactions avec les bases de données (ex: vérification de disponibilité avant réservation).
 - **Controllers**: Définition des endpoints REST et gestion des requètes/réponses.
 - **Guards & Decorators**: Protection des routes basée sur les rôles (`ADMIN`, `MANAGER`, `USER`).
 - **DTOs**: Validation stricte des données entrantes avec `class-validator`.
+- **Modals & UI States**: Gestion centralisée des composants complexes (ex: `ReservationModal`) via des états de pages pour garantir la stabilité du DOM et éviter les conflits de rendu.
 
 ## 🗄️ Stockage des Données
 

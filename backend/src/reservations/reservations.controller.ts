@@ -32,7 +32,7 @@ export class ReservationsController {
      */
     @Get()
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles('ADMIN')
+    @Roles('ADMIN', 'MANAGER')
     async findAll(
         @Query('skip') skip?: string,
         @Query('take') take?: string,
@@ -109,7 +109,7 @@ export class ReservationsController {
      */
     @Patch(':id')
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles('ADMIN')
+    @Roles('ADMIN', 'MANAGER')
     async update(
         @Param('id') id: string,
         @Body() updateReservationDto: UpdateReservationDto,

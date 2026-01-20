@@ -2,6 +2,6 @@
 
 import ReservationsManager from '@/components/ReservationsManager';
 
-export default function AdminReservationsPage() {
+export default function ManagerReservationsPage() {
     return <ReservationsManager />;
 }

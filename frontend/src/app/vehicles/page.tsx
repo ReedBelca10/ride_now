@@ -5,32 +5,16 @@ import Navbar from '@/components/Navbar';
 import { getAllVehicles } from '@/lib/vehicle-api';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Filter, Car, Users, Fuel, Gauge, CheckCircle } from 'lucide-react';
+import VehicleCard, { Vehicle } from '@/components/VehicleCard';
+import ReservationModal from '@/components/ReservationModal';
 import styles from './vehicles.module.css';
 
-interface Vehicle {
-  id: number;
-  marque: string;
-  modele: string;
-  annee: number;
-  immatriculation: string;
-  typeVehicule: string;
-  carburant: string;
-  transmission: string;
-  nombrePlaces: number;
-  couleur: string;
-  kilometrage: number;
-  prixParJour?: number;
-  description: string;
-  imageUrl?: string;
-  isActive: boolean;
-  isArchived: boolean;
-}
-
 export default function VehiclesPage() {
-  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
-  const [filteredVehicles, setFilteredVehicles] = useState<Vehicle[]>([]);
+  const [vehicles, setVehicles] = useState<any[]>([]);
+  const [filteredVehicles, setFilteredVehicles] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null);
 
   // Filters & Search
   const [searchTerm, setSearchTerm] = useState('');
@@ -141,68 +125,12 @@ export default function VehiclesPage() {
             <AnimatePresence>
               {filteredVehicles.length > 0 ? (
                 filteredVehicles.map((vehicle, index) => (
-                  <motion.div
+                  <VehicleCard
                     key={vehicle.id}
-                    layout
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ duration: 0.3, delay: index * 0.05 }}
-                    className={styles.vehicleCard}
-                  >
-                    <div className={styles.imageWrapper}>
-                      {vehicle.imageUrl ? (
-                        <img
-                          src={vehicle.imageUrl}
-                          alt={`${vehicle.marque} ${vehicle.modele}`}
-                          className={styles.vehicleImage}
-                        />
-                      ) : (
-                        <div className={styles.noImage}>
-                          <Car size={48} />
-                        </div>
-                      )}
-                      {vehicle.prixParJour && (
-                        <div className={styles.priceBadge}>
-                          <span>{vehicle.prixParJour}€</span>/jour
-                        </div>
-                      )}
-                    </div>
-
-                    <div className={styles.vehicleInfo}>
-                      <div className={styles.headerInfo}>
-                        <h3>{vehicle.marque} {vehicle.modele}</h3>
-                        <span className={styles.year}>{vehicle.annee}</span>
-                      </div>
-
-                      <div className={styles.specsGrid}>
-                        <div className={styles.specItem}>
-                          <Users size={16} />
-                          <span>{vehicle.nombrePlaces} places</span>
-                        </div>
-                        <div className={styles.specItem}>
-                          <Fuel size={16} />
-                          <span>{vehicle.carburant}</span>
-                        </div>
-                        <div className={styles.specItem}>
-                          <Gauge size={16} />
-                          <span>{vehicle.transmission}</span>
-                        </div>
-                        <div className={styles.specItem}>
-                          <CheckCircle size={16} />
-                          <span>{vehicle.typeVehicule}</span>
-                        </div>
-                      </div>
-
-                      <p className={styles.description}>{vehicle.description}</p>
-                    </div>
-
-                    <div className={styles.cardFooter}>
-                      <button className={styles.reserveBtn}>
-                        Réserver
-                      </button>
-                    </div>
-                  </motion.div>
+                    vehicle={vehicle}
+                    index={index}
+                    onReserve={(v) => setSelectedVehicle(v)}
+                  />
                 ))
               ) : (
                 <div className={styles.empty}>
@@ -215,6 +143,17 @@ export default function VehiclesPage() {
           </div>
         )}
       </div>
+
+      {selectedVehicle && (
+        <ReservationModal
+          vehicle={selectedVehicle}
+          isOpen={!!selectedVehicle}
+          onClose={() => setSelectedVehicle(null)}
+          onSuccess={() => {
+            // Optionnel: rafraîchir ou notifier
+          }}
+        />
+      )}
     </main>
   );
 }

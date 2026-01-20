@@ -16,6 +16,7 @@ RideNow est une application web moderne et élégante permettant la location de 
 
 - **Catalogue de Véhicules**: Recherche dynamique, filtres avancés et design premium.
 - **Espace Administrateur**: Gestion complète des utilisateurs, de la flotte et des statistiques.
+    Pour s'authentifier, utilisez en tant qu'administrateur Email : admin@ride-now.com ; mdp : Admin123! 
 - **Espace Manager**: Gestion opérationnelle des véhicules et analytics.
 - **Espace Client**: Profil utilisateur et historique des réservations (à venir).
 - **Design Moderne**: Interface responsive avec effets de glassmorphism et animations fluides.
