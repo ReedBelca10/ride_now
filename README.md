@@ -1,4 +1,4 @@
-# RideNow - Plateforme Premium de Location de Véhicules
+# RideNow - Plateforme Premium de réservation de Véhicules
 
 RideNow est une application web moderne et élégante permettant la location de véhicules premium et sportifs. Le projet est divisé en deux parties principales : un frontend React/Next.js et un backend NestJS.
 
