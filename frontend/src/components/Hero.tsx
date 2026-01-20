@@ -58,12 +58,12 @@ export default function Hero() {
                     animate="visible"
                 >
                     <motion.h1 className={styles.title} variants={itemVariants}>
-                        Conduisez <span className={styles.highlight}>l'Extraordinaire</span>
+                        Gérez vos <span className={styles.highlight}>Missions</span>
                     </motion.h1>
 
                     <motion.p className={styles.subtitle} variants={itemVariants}>
-                        Vivez le frisson de la mobilité électrique premium.
-                        Réservez votre véhicule de rêve en quelques secondes avec RideNow.
+                        Optimisez vos déplacements professionnels avec RideNow.
+                        Une plateforme fluide pour réserver vos véhicules de fonction en quelques secondes.
                     </motion.p>
 
                     <motion.div className={styles.buttons} variants={itemVariants}>
@@ -86,15 +86,15 @@ export default function Hero() {
                         <div className={styles.featureItem}>
                             <ShieldCheck className={styles.featureIcon} size={24} />
                             <div>
-                                <h3>Assurance Tous Risques</h3>
-                                <p>Roulez en toute sérénité</p>
+                                <h3>Gestion de Flotte</h3>
+                                <p>Disponibilité temps réel</p>
                             </div>
                         </div>
                         <div className={styles.featureItem}>
                             <Calendar className={styles.featureIcon} size={24} />
                             <div>
-                                <h3>Dates Flexibles</h3>
-                                <p>Changez vos plans à tout moment</p>
+                                <h3>Suivi des Missions</h3>
+                                <p>Organisation simplifiée</p>
                             </div>
                         </div>
                     </motion.div>

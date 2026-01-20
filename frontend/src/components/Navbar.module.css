@@ -5,14 +5,11 @@
     right: 0;
     height: var(--header-height);
     background: var(--navbar-bg);
-    /* Changed to white for light mode default, will handle dark in media query */
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
     z-index: 1000;
-    /* display: flex;  <-- Removed to let container auto margins work */
 }
 
-/* Ensure container takes full height for vertical alignment inside */
 .navbar :global(.container) {
     height: 100%;
 }
@@ -42,7 +39,8 @@
 
 .desktopMenu {
     display: none;
-    gap: 2rem;
+    gap: 3rem;
+    /* Increased gap for prestige */
 }
 
 @media (min-width: 768px) {
@@ -53,35 +51,71 @@
 
 .link {
     color: var(--text-secondary);
-    font-size: 0.95rem;
-    font-weight: 500;
-    transition: color 0.2s;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    transition: all 0.3s ease;
 }
 
 .link:hover {
     color: var(--text-primary);
+    letter-spacing: 0.3em;
 }
 
 .actions {
-    display: none;
+    display: flex;
     align-items: center;
-    gap: 1rem;
-}
-
-@media (min-width: 768px) {
-    .actions {
-        display: flex;
-    }
+    gap: 1.5rem;
 }
 
 .loginBtn {
-    color: var(--text-primary);
-    font-weight: 500;
-    font-size: 0.95rem;
+    color: var(--text-secondary);
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    transition: color 0.3s ease;
 }
 
 .loginBtn:hover {
-    color: var(--primary);
+    color: var(--text-primary);
+}
+
+.profileLink {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--text-primary);
+    padding: 0.4rem 1.25rem;
+    border-radius: var(--radius-full);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.profileLink:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+}
+
+.avatarMini {
+    width: 20px;
+    height: 20px;
+    border-radius: 9999px;
+    object-fit: cover;
+    background: var(--border);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nameMini {
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--text-primary);
 }
 
 .mobileToggle {

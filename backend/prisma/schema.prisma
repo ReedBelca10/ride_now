@@ -1,0 +1,191 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============================
+// Modèle Utilisateur
+// ============================
+model User {
+  id                Int       @id @default(autoincrement())
+  email             String    @unique
+  password          String
+  firstName         String
+  lastName          String
+  profilePicture    String?
+  telephone         String?
+  adresse           String?
+  codePostal        String?
+  ville             String?
+  dateNaissance     DateTime?
+  permisConduire    String?   // Numéro du permis
+  role              Role      @default(USER)
+  isActive          Boolean   @default(true)
+  resetToken        String?   // Token pour réinitialiser le mot de passe
+  resetTokenExpires DateTime? // Expiration du token
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  // Relations
+  reservations      Reservation[]
+  avis              Review[]
+  paiements         Payment[]
+}
+
+// ============================
+// Modèle Véhicule
+// ============================
+model Vehicle {
+  id                Int       @id @default(autoincrement())
+  marque            String    // Ex: Ferrari, Lamborghini
+  modele            String    // Ex: F8 Tributo
+  annee             Int
+  immatriculation   String    @unique
+  typeVehicule      TypeVehicule
+  carburant         Carburant @default(ESSENCE)
+  transmission      Transmission @default(AUTOMATIQUE)
+  nombrePlaces      Int       @default(2)
+  couleur           String
+  kilometrage       Int       @default(0)
+  prixParJour       Float     // Prix en euros
+  description       String?
+  image             String?   // URL ou chemin Supabase
+  etat              EtatVehicule @default(DISPONIBLE)
+  isActive          Boolean   @default(true)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  // Relations
+  reservations      Reservation[]
+  avis              Review[]
+}
+
+// ============================
+// Modèle Réservation
+// ============================
+model Reservation {
+  id                Int       @id @default(autoincrement())
+  utilisateur       User      @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
+  utilisateurId     Int
+  vehicule          Vehicle   @relation(fields: [vehiculeId], references: [id], onDelete: Cascade)
+  vehiculeId        Int
+  dateDebut         DateTime
+  dateFin           DateTime
+  dureeJours        Int       // Calculé automatiquement
+  prixTotal         Float
+  etat              EtatReservation @default(EN_ATTENTE)
+  locationCode      String    @unique
+  lieuPickup        String
+  lieuRetour        String?
+  remarques         String?
+  paiement          Payment?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  // Relations
+  avis              Review[]
+}
+
+// ============================
+// Modèle Avis/Évaluation
+// ============================
+model Review {
+  id                Int       @id @default(autoincrement())
+  utilisateur       User      @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
+  utilisateurId     Int
+  vehicule          Vehicle   @relation(fields: [vehiculeId], references: [id], onDelete: Cascade)
+  vehiculeId        Int
+  reservation       Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+  reservationId     Int
+  note              Int       // 1 à 5
+  commentaire       String?
+  dateAvis          DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+// ============================
+// Modèle Paiement
+// ============================
+model Payment {
+  id                Int       @id @default(autoincrement())
+  reservation       Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+  reservationId     Int       @unique
+  utilisateur       User      @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
+  utilisateurId     Int
+  montant           Float
+  modePaiement      ModePaiement
+  statut            StatutPaiement @default(EN_ATTENTE)
+  referenceTransaction String?
+  dateTransaction   DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+// ============================
+// Énumérations
+// ============================
+
+enum Role {
+  USER      // Employé(e) - utilisateur basique par défaut
+  MANAGER   // Gestionnaire de véhicules et réservations
+  ADMIN     // Administrateur système
+}
+
+enum TypeVehicule {
+  BERLINE
+  SPORTIVE
+  SUV
+  CABRIOLET
+  MONOSPACE
+  COMBI
+}
+
+enum Carburant {
+  ESSENCE
+  DIESEL
+  HYBRIDE
+  ELECTRIQUE
+}
+
+enum Transmission {
+  MANUELLE
+  AUTOMATIQUE
+}
+
+enum EtatVehicule {
+  DISPONIBLE
+  RESERVE
+  EN_MAINTENANCE
+  INDISPONIBLE
+}
+
+enum EtatReservation {
+  EN_ATTENTE
+  CONFIRMEE
+  EN_COURS
+  COMPLETEE
+  ANNULEE
+  REFUSEE
+}
+
+enum ModePaiement {
+  CARTE_BANCAIRE
+  VIREMENT
+  PAYPAL
+  APPLE_PAY
+  GOOGLE_PAY
+}
+
+enum StatutPaiement {
+  EN_ATTENTE
+  ACCEPTE
+  REFUSE
+  REMBOURSE
+}
