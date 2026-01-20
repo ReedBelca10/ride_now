@@ -12,13 +12,15 @@ import { useAuth } from '@/lib/auth-context';
 interface ProtectedRouteProps {
   children: React.ReactNode;
   requiredRole?: string;
+  allowedRoles?: string[];
 }
 
 /**
  * Wrapper pour les pages protégées
  * Exemple d'utilisation: <ProtectedRoute requiredRole="ADMIN">...</ProtectedRoute>
+ * Ou: <ProtectedRoute allowedRoles={['ADMIN', 'MANAGER']}>...</ProtectedRoute>
  */
-export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) {
+export function ProtectedRoute({ children, requiredRole, allowedRoles }: ProtectedRouteProps) {
   const { user, isLoading, isAuthenticated } = useAuth();
   const router = useRouter();
 
@@ -39,7 +41,13 @@ export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) 
       router.push('/'); // Redirige vers l'accueil si rôle insuffisant
       return;
     }
-  }, [isLoading, isAuthenticated, user?.role, requiredRole, router]);
+
+    // Vérifie si le rôle est dans la liste autorisée
+    if (allowedRoles && (!user?.role || !allowedRoles.includes(user.role))) {
+      router.push('/');
+      return;
+    }
+  }, [isLoading, isAuthenticated, user?.role, requiredRole, allowedRoles, router]);
 
   // Affiche un loading state pendant la vérification
   if (isLoading) {
@@ -54,9 +62,14 @@ export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) 
   }
 
   // Affiche la page si authentifié et autorisé
-  if (isAuthenticated && (!requiredRole || user?.role === requiredRole)) {
+  const isRoleAuthorized =
+    (!requiredRole || user?.role === requiredRole) &&
+    (!allowedRoles || (user?.role && allowedRoles.includes(user.role)));
+
+  if (isAuthenticated && isRoleAuthorized) {
     return <>{children}</>;
   }
+
 
   // Affiche rien si la redirection est en cours
   return null;

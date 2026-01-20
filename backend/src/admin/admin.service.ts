@@ -16,6 +16,18 @@ export class AdminService {
      * Crée un nouvel utilisateur (Admin)
      */
     async createUser(createUserDto: any): Promise<Omit<User, 'password'>> {
+        // Validate required fields
+        if (!createUserDto.email || !createUserDto.firstName || !createUserDto.lastName) {
+            throw new BadRequestException('Email, prénom et nom sont requis');
+        }
+
+        // Validate role
+        const validRoles = ['USER', 'MANAGER', 'ADMIN'];
+        const role = createUserDto.role || 'USER';
+        if (!validRoles.includes(role)) {
+            throw new BadRequestException(`Rôle invalide. Les valeurs valides sont: ${validRoles.join(', ')}`);
+        }
+
         const existingUser = await this.prisma.user.findUnique({
             where: { email: createUserDto.email },
         });
@@ -34,7 +46,7 @@ export class AdminService {
                 firstName: createUserDto.firstName,
                 lastName: createUserDto.lastName,
                 password: hashedPassword,
-                role: createUserDto.role || 'USER',
+                role: role as any,
                 telephone: createUserDto.telephone,
                 isActive: true,
             },
@@ -109,6 +121,14 @@ export class AdminService {
             throw new NotFoundException('Utilisateur non trouvé');
         }
 
+        // Validate role if provided
+        if (updateUserDto.role) {
+            const validRoles = ['USER', 'MANAGER', 'ADMIN'];
+            if (!validRoles.includes(updateUserDto.role)) {
+                throw new BadRequestException(`Rôle invalide. Les valeurs valides sont: ${validRoles.join(', ')}`);
+            }
+        }
+
         const updated = await this.prisma.user.update({
             where: { id },
             data: updateUserDto,
@@ -141,6 +161,38 @@ export class AdminService {
     }
 
     /**
+     * Supprime définitivement un utilisateur (hard delete)
+     */
+    async hardDeleteUser(id: number): Promise<{ message: string }> {
+        const user = await this.prisma.user.findUnique({ where: { id } });
+
+        if (!user) {
+            throw new NotFoundException('Utilisateur non trouvé');
+        }
+
+        if (user.role === 'ADMIN') {
+            throw new BadRequestException('Impossible de supprimer définitivement un administrateur');
+        }
+
+        // Delete all related reservations first
+        await this.prisma.reservation.deleteMany({
+            where: { utilisateurId: id },
+        });
+
+        // Delete all related reviews
+        await this.prisma.review.deleteMany({
+            where: { utilisateurId: id },
+        });
+
+        // Delete the user
+        await this.prisma.user.delete({
+            where: { id },
+        });
+
+        return { message: 'Utilisateur supprimé définitivement' };
+    }
+
+    /**
      * Change le rôle d'un utilisateur
      */
     async changeUserRole(id: number, changeRoleDto: ChangeUserRoleDto): Promise<Omit<User, 'password'>> {
@@ -166,6 +218,7 @@ export class AdminService {
         const [
             totalUsers,
             totalVehicles,
+            availableVehicles,
             totalReservations,
             activeReservations,
             totalRevenue,
@@ -173,6 +226,7 @@ export class AdminService {
         ] = await Promise.all([
             this.prisma.user.count({ where: { isActive: true } }),
             this.prisma.vehicle.count({ where: { isActive: true } }),
+            this.prisma.vehicle.count({ where: { isActive: true, etat: 'DISPONIBLE' } }),
             this.prisma.reservation.count(),
             this.prisma.reservation.count({
                 where: { etat: { in: ['CONFIRMEE', 'EN_COURS'] } },
@@ -205,6 +259,7 @@ export class AdminService {
         return {
             totalUsers,
             totalVehicles,
+            availableVehicles,
             totalReservations,
             activeReservations,
             totalRevenue: totalRevenue._sum.prixTotal || 0,
@@ -308,5 +363,89 @@ export class AdminService {
             type: v.typeVehicule,
             count: v._count,
         }));
+    }
+
+
+
+    /**
+     * Récupère toutes les réservations avec pagination et filtres
+     */
+    async getAllReservations(
+        skip: number = 0,
+        take: number = 10,
+        etat?: string,
+        search?: string
+    ) {
+        const where: Prisma.ReservationWhereInput = {
+            ...(etat && { etat: etat as any }),
+            ...(search && {
+                OR: [
+                    { utilisateur: { firstName: { contains: search, mode: 'insensitive' } } },
+                    { utilisateur: { lastName: { contains: search, mode: 'insensitive' } } },
+                    { utilisateur: { email: { contains: search, mode: 'insensitive' } } },
+                    { vehicule: { marque: { contains: search, mode: 'insensitive' } } },
+                    { vehicule: { modele: { contains: search, mode: 'insensitive' } } },
+                    { locationCode: { contains: search, mode: 'insensitive' } },
+                ],
+            }),
+        };
+
+        const [reservations, total] = await Promise.all([
+            this.prisma.reservation.findMany({
+                where,
+                skip,
+                take,
+                orderBy: { createdAt: 'desc' },
+                include: {
+                    utilisateur: {
+                        select: {
+                            id: true,
+                            firstName: true,
+                            lastName: true,
+                            email: true,
+                            telephone: true,
+                        },
+                    },
+                    vehicule: {
+                        select: {
+                            id: true,
+                            marque: true,
+                            modele: true,
+                            immatriculation: true,
+                        },
+                    },
+                },
+            }),
+            this.prisma.reservation.count({ where }),
+        ]);
+
+        return {
+            reservations,
+            total,
+            skip,
+            take,
+        };
+    }
+
+    /**
+     * Met à jour l'état d'une réservation
+     */
+    async updateReservationEtat(id: number, newEtat: string) {
+        const reservation = await this.prisma.reservation.findUnique({
+            where: { id },
+        });
+
+        if (!reservation) {
+            throw new NotFoundException('Réservation non trouvée');
+        }
+
+        return this.prisma.reservation.update({
+            where: { id },
+            data: { etat: newEtat as any },
+            include: {
+                utilisateur: true,
+                vehicule: true,
+            },
+        });
     }
 }

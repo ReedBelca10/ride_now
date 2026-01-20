@@ -19,6 +19,7 @@ interface UserData {
 
 interface AuthContextType {
   user: UserData | null;
+  token: string | null;
   isLoading: boolean;
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<void>;
@@ -36,11 +37,18 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
  */
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<UserData | null>(null);
+  const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   // Charge l'utilisateur depuis le localStorage au montage
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
+    const storedToken = localStorage.getItem('token');
+
+    if (storedToken) {
+      setToken(storedToken);
+    }
+
     if (storedUser) {
       try {
         setUser(JSON.parse(storedUser));
@@ -68,6 +76,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       localStorage.setItem('token', access_token);
       localStorage.setItem('user', JSON.stringify(userData));
+      setToken(access_token);
       setUser(userData);
     } finally {
       setIsLoading(false);
@@ -90,6 +99,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       localStorage.setItem('token', access_token);
       localStorage.setItem('user', JSON.stringify(newUser));
+      setToken(access_token);
       setUser(newUser);
     } finally {
       setIsLoading(false);
@@ -102,6 +112,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    setToken(null);
     setUser(null);
   };
 
@@ -116,6 +127,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const value: AuthContextType = {
     user,
+    token,
     isLoading,
     isAuthenticated: !!user,
     login,

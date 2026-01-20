@@ -1,0 +1,414 @@
+/* Users Management Page Styles */
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+}
+
+.title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.5px;
+}
+
+.subtitle {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.createBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.875rem 1.5rem;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(0, 255, 242, 0.15));
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 12px;
+    color: #00d4ff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.createBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 212, 255, 0.2);
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(0, 255, 242, 0.2));
+}
+
+/* Filters */
+.filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.searchBox {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1.25rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.searchBox:focus-within {
+    border-color: rgba(0, 212, 255, 0.3);
+    box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+}
+
+.searchBox svg {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.searchInput {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #ffffff;
+    font-size: 0.95rem;
+}
+
+.searchInput::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.roleFilter {
+    padding: 0.875rem 1.25rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    color: #ffffff;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 180px;
+}
+
+.roleFilter:hover {
+    border-color: rgba(0, 212, 255, 0.3);
+}
+
+.roleFilter option {
+    background: #0f0f14;
+    color: #ffffff;
+}
+
+/* Table */
+.tableWrapper {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table thead {
+    background: rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.table th {
+    padding: 1rem 1.5rem;
+    text-align: left;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.table tbody tr {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: background 0.2s ease;
+}
+
+.table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.table td {
+    padding: 1.25rem 1.5rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+}
+
+.userName {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+}
+
+.userAvatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(217, 70, 239, 0.2));
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: #00d4ff;
+}
+
+.roleBadge {
+    display: inline-block;
+    padding: 0.375rem 0.875rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.roleBadge.admin {
+    background: rgba(217, 70, 239, 0.15);
+    color: #d946ef;
+    border: 1px solid rgba(217, 70, 239, 0.3);
+}
+
+.roleBadge.manager {
+    background: rgba(0, 212, 255, 0.15);
+    color: #00d4ff;
+    border: 1px solid rgba(0, 212, 255, 0.3);
+}
+
+.roleBadge.user {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.statusBadge {
+    display: inline-block;
+    padding: 0.375rem 0.875rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.statusBadge.active {
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.statusBadge.active:hover:not(:disabled) {
+    background: rgba(34, 197, 94, 0.25);
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
+    transform: scale(1.05);
+}
+
+.statusBadge.inactive {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.statusBadge.inactive:hover:not(:disabled) {
+    background: rgba(239, 68, 68, 0.25);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+    transform: scale(1.05);
+}
+
+.statusBadge:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.actionBtn {
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.actionBtn:hover {
+    background: rgba(0, 212, 255, 0.1);
+    border-color: rgba(0, 212, 255, 0.3);
+    color: #00d4ff;
+}
+
+.actionBtn.deleteBtn:hover {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #ef4444;
+}
+
+.actionBtn.hardDeleteBtn {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.4);
+    color: #dc2626;
+}
+
+.actionBtn.hardDeleteBtn:hover {
+    background: rgba(239, 68, 68, 0.25);
+    border-color: rgba(239, 68, 68, 0.6);
+    color: #dc2626;
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.3);
+}
+
+.actionBtn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* Loading */
+.loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    gap: 1rem;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 3px solid rgba(0, 212, 255, 0.1);
+    border-top-color: #00d4ff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loading p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1rem;
+}
+
+/* Empty State */
+.empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.empty svg {
+    margin-bottom: 1rem;
+}
+
+.empty p {
+    font-size: 1rem;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.75rem;
+}
+
+.paginationBtn {
+    padding: 0.65rem 1.5rem;
+    background: rgba(0, 212, 255, 0.15);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    color: #00d4ff;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.paginationBtn:hover:not(:disabled) {
+    background: rgba(0, 212, 255, 0.25);
+    border-color: rgba(0, 212, 255, 0.5);
+}
+
+.paginationBtn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.paginationInfo {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.95rem;
+    min-width: 250px;
+    text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .createBtn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .filters {
+        flex-direction: column;
+    }
+
+    .tableWrapper {
+        overflow-x: auto;
+    }
+
+    .table {
+        min-width: 800px;
+    }
+
+    .pagination {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .paginationInfo {
+        width: 100%;
+    }
+}

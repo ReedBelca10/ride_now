@@ -113,6 +113,9 @@ export class ReservationsService {
         );
 
         // Calcule le prix total
+        if (vehicule.prixParJour === null || vehicule.prixParJour === undefined) {
+            throw new BadRequestException('Le prix du véhicule n\'est pas défini, impossible de créer une réservation');
+        }
         const prixTotal = vehicule.prixParJour * dureeJours;
 
         // Génère un code de location unique
@@ -153,14 +156,14 @@ export class ReservationsService {
         return this.prisma.reservation.update({
             where: { id },
             data: {
-        ...(updateReservationDto.etat && { etat: updateReservationDto.etat as any }),
-        ...(updateReservationDto.remarques !== undefined && {
-          remarques: updateReservationDto.remarques,
-        }),
-        ...(updateReservationDto.lieuRetour && {
-          lieuRetour: updateReservationDto.lieuRetour,
-        }),
-      } as any,
+                ...(updateReservationDto.etat && { etat: updateReservationDto.etat as any }),
+                ...(updateReservationDto.remarques !== undefined && {
+                    remarques: updateReservationDto.remarques,
+                }),
+                ...(updateReservationDto.lieuRetour && {
+                    lieuRetour: updateReservationDto.lieuRetour,
+                }),
+            } as any,
         });
     }
 

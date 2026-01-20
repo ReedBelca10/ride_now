@@ -41,6 +41,8 @@ function LoginContent() {
     if (user) {
         if (user.role === "ADMIN") {
             router.push("/admin/dashboard");
+        } else if (user.role === "MANAGER") {
+            router.push("/manager");
         } else {
             router.push("/vehicles");
         }

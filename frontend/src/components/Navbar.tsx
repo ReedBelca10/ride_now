@@ -80,7 +80,7 @@ export default function Navbar() {
                                     style={{ cursor: "pointer", background: "none", border: "1px solid rgba(255, 255, 255, 0.08)" }}
                                 >
                                     {user.profilePicture ? (
-                                        <Image src={user.profilePicture} alt="Avatar" width={24} height={24} className={styles.avatarMini} />
+                                        <Image src={user.profilePicture} alt="Avatar" width={24} height={24} className={styles.avatarMini} unoptimized={true} />
                                     ) : (
                                         <User size={14} style={{ color: "var(--text-tertiary)" }} />
                                     )}
@@ -135,28 +135,63 @@ export default function Navbar() {
                                                 <User size={16} style={{ color: "var(--text-secondary)" }} />
                                                 Mon Profil
                                             </Link>
+
                                             {user.role === 'ADMIN' && (
-                                                <Link
-                                                    href="/admin/dashboard"
-                                                    onClick={() => setDropdownOpen(false)}
-                                                    style={{
-                                                        display: "flex",
-                                                        alignItems: "center",
-                                                        gap: "0.75rem",
-                                                        padding: "0.875rem 1rem",
-                                                        color: "var(--text-primary)",
-                                                        fontSize: "0.875rem",
-                                                        fontWeight: 500,
-                                                        transition: "background 0.2s",
-                                                        textDecoration: "none"
-                                                    }}
-                                                    onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.05)"}
-                                                    onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
-                                                >
-                                                    <ShieldCheck size={16} style={{ color: "var(--text-secondary)" }} />
-                                                    Administration
-                                                </Link>
+                                                <>
+                                                    <div style={{ height: "1px", background: "var(--border)" }} />
+                                                    <Link
+                                                        href="/admin/dashboard"
+                                                        onClick={() => setDropdownOpen(false)}
+                                                        style={{
+                                                            display: "flex",
+                                                            alignItems: "center",
+                                                            gap: "0.75rem",
+                                                            padding: "0.875rem 1rem",
+                                                            color: "var(--text-primary)",
+                                                            fontSize: "0.875rem",
+                                                            fontWeight: 500,
+                                                            transition: "background 0.2s",
+                                                            textDecoration: "none"
+                                                        }}
+                                                        onMouseEnter={(e) => e.currentTarget.style.background = "rgba(100, 102, 241, 0.1)"}
+                                                        onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
+                                                    >
+                                                        <ShieldCheck size={16} style={{ color: "#6366f1" }} />
+                                                        <span style={{ background: "linear-gradient(135deg, #00d4ff, #d946ef)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+                                                            Dashboard
+                                                        </span>
+                                                    </Link>
+                                                </>
                                             )}
+
+                                            {user.role === 'MANAGER' && (
+                                                <>
+                                                    <div style={{ height: "1px", background: "var(--border)" }} />
+                                                    <Link
+                                                        href="/manager"
+                                                        onClick={() => setDropdownOpen(false)}
+                                                        style={{
+                                                            display: "flex",
+                                                            alignItems: "center",
+                                                            gap: "0.75rem",
+                                                            padding: "0.875rem 1rem",
+                                                            color: "var(--text-primary)",
+                                                            fontSize: "0.875rem",
+                                                            fontWeight: 500,
+                                                            transition: "background 0.2s",
+                                                            textDecoration: "none"
+                                                        }}
+                                                        onMouseEnter={(e) => e.currentTarget.style.background = "rgba(100, 102, 241, 0.1)"}
+                                                        onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
+                                                    >
+                                                        <ShieldCheck size={16} style={{ color: "#00d4ff" }} />
+                                                        <span style={{ background: "linear-gradient(135deg, #00d4ff, #d946ef)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+                                                            Dashboard
+                                                        </span>
+                                                    </Link>
+                                                </>
+                                            )}
+
                                             <div style={{ height: "1px", background: "var(--border)" }} />
                                             <button
                                                 onClick={handleLogout}
@@ -230,11 +265,43 @@ export default function Navbar() {
                                     <Link href="/profile" className={styles.mobileLink} onClick={() => setIsOpen(false)}>
                                         Mon Profil
                                     </Link>
+
                                     {user.role === 'ADMIN' && (
-                                        <Link href="/admin/dashboard" className={styles.mobileLink} onClick={() => setIsOpen(false)}>
-                                            For Admin
+                                        <Link
+                                            href="/admin/dashboard"
+                                            className={styles.mobileLink}
+                                            onClick={() => setIsOpen(false)}
+                                            style={{
+                                                background: "linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(217, 70, 239, 0.1))",
+                                                border: "1px solid rgba(100, 102, 241, 0.2)",
+                                                borderRadius: "8px",
+                                                padding: "0.875rem 1rem",
+                                                marginTop: "0.5rem"
+                                            }}
+                                        >
+                                            <ShieldCheck size={18} style={{ marginRight: "0.5rem", color: "#6366f1", display: "inline" }} />
+                                            Dashboard Admin
                                         </Link>
                                     )}
+
+                                    {user.role === 'MANAGER' && (
+                                        <Link
+                                            href="/manager"
+                                            className={styles.mobileLink}
+                                            onClick={() => setIsOpen(false)}
+                                            style={{
+                                                background: "linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(217, 70, 239, 0.1))",
+                                                border: "1px solid rgba(100, 102, 241, 0.2)",
+                                                borderRadius: "8px",
+                                                padding: "0.875rem 1rem",
+                                                marginTop: "0.5rem"
+                                            }}
+                                        >
+                                            <ShieldCheck size={18} style={{ marginRight: "0.5rem", color: "#00d4ff", display: "inline" }} />
+                                            Dashboard Manager
+                                        </Link>
+                                    )}
+
                                     <button
                                         onClick={() => {
                                             handleLogout();

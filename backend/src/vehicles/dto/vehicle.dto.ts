@@ -44,16 +44,15 @@ export class CreateVehicleDto {
   kilometrage?: number;
 
   @IsNumber({}, { message: 'Le prix par jour doit être un nombre' })
-  @IsPositive({ message: 'Le prix par jour doit être positif' })
-  prixParJour: number;
+  @Min(0, { message: 'Le prix par jour doit être positif ou nul' })
+  @IsOptional()
+  prixParJour?: number;
 
   @IsString({ message: 'La description doit être une chaîne de caractères' })
   @IsOptional()
   description?: string;
 
-  @IsString({ message: 'L\'image doit être une chaîne de caractères' })
-  @IsOptional()
-  image?: string;
+  // Note: L'image est uploadée séparément via FormData
 }
 
 export class UpdateVehicleDto {
@@ -65,6 +64,10 @@ export class UpdateVehicleDto {
   @IsOptional()
   modele?: string;
 
+  @IsString()
+  @IsOptional()
+  immatriculation?: string;
+
   @IsNumber()
   @IsOptional()
   annee?: number;
@@ -73,9 +76,21 @@ export class UpdateVehicleDto {
   @IsOptional()
   typeVehicule?: string;
 
+  @IsString()
+  @IsOptional()
+  carburant?: string;
+
+  @IsString()
+  @IsOptional()
+  transmission?: string;
+
   @IsNumber()
   @IsOptional()
-  @IsPositive()
+  nombrePlaces?: number;
+
+  @IsNumber()
+  @IsOptional()
+  @Min(0)
   prixParJour?: number;
 
   @IsString()
@@ -88,5 +103,16 @@ export class UpdateVehicleDto {
 
   @IsString()
   @IsOptional()
-  image?: string;
+  couleur?: string;
+
+  @IsNumber()
+  @IsOptional()
+  kilometrage?: number;
+
+  // Note: L'image est uploadée séparément via FormData
 }
+
+export class ArchiveVehicleDto {
+  // DTO vide, utilisé pour la validation
+}
+

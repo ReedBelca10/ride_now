@@ -9,6 +9,7 @@ import { ReservationsModule } from './reservations/reservations.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { PrismaModule } from './prisma.module';
 import { AdminModule } from './admin/admin.module';
+import { SupabaseModule } from './supabase/supabase.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { AdminModule } from './admin/admin.module';
       envFilePath: '.env',
     }),
     PrismaModule,
+    SupabaseModule,
     AuthModule,
     UsersModule,
     VehiclesModule,
@@ -27,4 +29,4 @@ import { AdminModule } from './admin/admin.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

@@ -54,11 +54,14 @@ model Vehicle {
   nombrePlaces      Int       @default(2)
   couleur           String
   kilometrage       Int       @default(0)
-  prixParJour       Float     // Prix en euros
+  prixParJour       Float?     // Prix en euros
   description       String?
-  image             String?   // URL ou chemin Supabase
+  imageUrl          String?   // URL Supabase
+  imagePath         String?   // Chemin dans le bucket
   etat              EtatVehicule @default(DISPONIBLE)
   isActive          Boolean   @default(true)
+  isArchived        Boolean   @default(false)   // Soft delete
+  archivedAt        DateTime? // Date d'archivage
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
 
